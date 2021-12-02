@@ -7,20 +7,29 @@ const uatomToAtom = (uatom) => {
 export default (props) => (
   <StackableContainer lessPadding lessMargin>
     <ul className="meta-data">
-      {props.tx.msgs && (
-        <li>
-          <label>Amount:</label>
-          <div>{uatomToAtom(props.tx.msgs[0].value.amount[0].amount)} ATOM</div>
+      {props.tx.msgs &&
+      props.tx.msgs[0].typeURL === "/cosmos.bank.v1beta1.MsgSend" ? (
+        <>
+          <li>
+            <label>Amount:</label>
+            <div>
+              {uatomToAtom(props.tx.msgs[0].value.amount[0].amount)} ATOM
+            </div>
+          </li>
+          <li>
+            <label>To:</label>
+            <div title={props.tx.msgs[0].value.toAddress}>
+              <HashView hash={props.tx.msgs[0].value.toAddress} />
+            </div>
+          </li>
+        </>
+      ) : (
+        <li className="custom-tx">
+          <p>Custom Transaction JSON</p>
+          <pre>{JSON.stringify(props.tx, null, 2)}</pre>
         </li>
       )}
-      {props.tx.msgs && (
-        <li>
-          <label>To:</label>
-          <div title={props.tx.msgs[0].value.toAddress}>
-            <HashView hash={props.tx.msgs[0].value.toAddress} />
-          </div>
-        </li>
-      )}
+
       {props.tx.fee && (
         <li>
           <label>Gas:</label>
@@ -60,6 +69,13 @@ export default (props) => (
       }
       .meta-data li div {
         padding: 3px 6px;
+      }
+      .meta-data li.custom-tx {
+        display: block;
+      }
+      pre {
+        font-family: monospace;
+        font-size: 12px;
       }
     `}</style>
   </StackableContainer>

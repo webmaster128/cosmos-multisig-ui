@@ -38,6 +38,11 @@ export async function getServerSideProps(context) {
 
 const multipage = (props) => {
   const [showTxForm, setShowTxForm] = useState(false);
+  const [isCustomTx, setIsCustomTx] = useState(false);
+  const handleTxShow = (isCustom) => {
+    setIsCustomTx(isCustom);
+    setShowTxForm(true);
+  };
   const router = useRouter();
   const { address } = router.query;
   return (
@@ -70,6 +75,7 @@ const multipage = (props) => {
             address={address}
             accountOnChain={props.accountOnChain}
             holdings={props.holdings}
+            isCustom={isCustomTx}
             closeForm={() => {
               setShowTxForm(false);
             }}
@@ -87,9 +93,15 @@ const multipage = (props) => {
                   multisig members, and then broadcast.
                 </p>
                 <Button
-                  label="Create Transaction"
+                  label="Send Funds"
                   onClick={() => {
-                    setShowTxForm(true);
+                    handleTxShow(false);
+                  }}
+                />
+                <Button
+                  label="Create Custom Transaction"
+                  onClick={() => {
+                    handleTxShow(true);
                   }}
                 />
               </StackableContainer>
