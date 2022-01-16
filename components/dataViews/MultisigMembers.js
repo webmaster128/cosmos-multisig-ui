@@ -3,17 +3,17 @@ import React from "react";
 import HashView from "./HashView";
 import StackableContainer from "../layout/StackableContainer";
 
-const MultisigMembers = (_props) => (
+const MultisigMembers = (props) => (
   <StackableContainer lessPadding>
     <div className="meta-data">
       <div>
         <h2>Threshold</h2>
-        <div className="info threshold">{_props.threshold}</div>
+        <div className="info threshold">{props.threshold}</div>
       </div>
       <div>
         <h2>Members</h2>
         <ul>
-          {_props.members.map((address) => (
+          {props.members.map((address) => (
             <li key={address} className="info">
               <HashView hash={address} />
             </li>
